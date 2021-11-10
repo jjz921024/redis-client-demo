@@ -1,0 +1,92 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+            allowInsecureProtocol=true
+        }
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'maven-publish'
+    //id "org.sonarqube" version "3.3"
+    //id "org.owasp.dependencycheck" version "6.3.1"
+}
+
+group 'cn.webank'
+version '2.0.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public"
+        allowInsecureProtocol true
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+javadoc.options.encoding = "UTF-8"
+
+clean.doFirst {
+    delete 'build'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java', 'src/test/groovy']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+dependencies {
+    api 'io.lettuce:lettuce-core:6.1.4.RELEASE'
+    implementation 'io.netty:netty-codec-http:4.1.65.Final'
+
+    /*implementation 'org.latencyutils:LatencyUtils:2.0.3'
+    implementation 'io.zipkin.brave:brave:5.13.3'*/
+
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.bouncycastle:bcprov-jdk16:1.46'
+
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.6'
+    testRuntimeOnly 'ch.qos.logback:logback-core:1.2.6'
+
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.0')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.0')
+    testImplementation('org.junit.jupiter:junit-jupiter-params:5.8.0')
+
+    testImplementation('org.mockito:mockito-core:3.12.4')
+    testImplementation('org.mockito:mockito-junit-jupiter:2.21.0')
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+java {
+    withSourcesJar()
+}
